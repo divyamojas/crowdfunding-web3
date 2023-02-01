@@ -64,7 +64,7 @@ const Navbar = () => {
         />
         <div
           className={`absolute top-[60px] right-0 left-0 bg-[#1c1c24] z-10 shadow-secondary py-4 ${
-            !toggleDrawer ? "translate-x-[100vw]" : "translate-x-0"
+            !toggleDrawer ? "-translate-y-[100vh]" : "translate-y-0"
           } transition-all duration-700`}
         >
           <ul className="mb-4">
@@ -103,6 +103,7 @@ const Navbar = () => {
               title={address ? "Create a Campaign" : "Connect"}
               styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
               handleClick={() => {
+                setToggleDrawer((prev) => !prev);
                 if (address) navigate("create-campaign");
                 else "connect";
               }}
