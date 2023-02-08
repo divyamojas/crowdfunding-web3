@@ -71,7 +71,9 @@ const FundCard = ({
               className="w-1/2 h-1/2 object-contain"
             />
           </div>
-          <p className="flex-1 font-epilogue font-normal text-[12px] text-[#808191] truncate">by <span className="text-[#b2b3bd]">{owner}</span> </p>
+          <p className="flex-1 font-epilogue font-normal text-[12px] text-[#808191] truncate">
+            by <span className="text-[#b2b3bd]">{owner}</span>{" "}
+          </p>
         </div>
       </div>
     </div>
