@@ -37,15 +37,6 @@ const CreateCampaign = () => {
         setForm({ ...form, image: "" });
       }
     });
-
-    // setForm({
-    //   name: "",
-    //   title: "",
-    //   description: "",
-    //   target: "",
-    //   deadline: "",
-    //   image: "",
-    // });
   };
 
   const handleFormFieldChange = (fieldname, e) => {

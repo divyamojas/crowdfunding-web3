@@ -10,7 +10,7 @@ const CampaignDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const { donate, getDonations, contract, address } = useStateContext();
+  const { donate,deleteCampaign, getDonations, contract, address } = useStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState("");
@@ -22,6 +22,13 @@ const CampaignDetails = () => {
     setIsLoading(true);
 
     await donate(state.pId, amount);
+    setIsLoading(false);
+    navigate("/");
+  };
+  const handleDelete = async () => {
+    setIsLoading(true);
+
+    await deleteCampaign(state.pId);
     setIsLoading(false);
     navigate("/");
   };
@@ -168,6 +175,16 @@ const CampaignDetails = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="mt-[30px]">
+        <CustomButton
+          btnType="button"
+          title="Delete Campaign"
+          styles="w-full bg-transparent text-red border-[1px] border-[red]"
+
+          deleteButton = {true}
+          handleClick={handleDelete}
+        />
       </div>
     </div>
   );
