@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useStateContext } from "../context";
-import { CountBox, CustomButton } from "../components";
+import { CountBox, CustomButton, Loader } from "../components";
 import { calculateBarPercentage, daysLeft } from "../utils";
 import { thirdweb } from "../assets";
 
 const CampaignDetails = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
+
   const { donate, getDonations, contract, address } = useStateContext();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState("");
   const [donators, setDonators] = useState([]);
 
@@ -20,6 +22,8 @@ const CampaignDetails = () => {
     setIsLoading(true);
 
     await donate(state.pId, amount);
+    setIsLoading(false);
+    navigate("/");
   };
 
   const fetchDonators = async () => {
@@ -28,13 +32,13 @@ const CampaignDetails = () => {
     setDonators(data);
   };
 
+  console.log(state);
   useEffect(() => {
     if (contract) fetchDonators();
   }, [contract, address]);
-
   return (
     <div>
-      {isLoading && "Loading..."}
+      {isLoading && <Loader />}
       <div className="w-full flex md:flex-row flex-col mt-[10px] gap-[30px]">
         <div className="flex-1 flex-col">
           <img
@@ -72,7 +76,7 @@ const CampaignDetails = () => {
             <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">
               Creator
             </h4>
-            <div className="mt-[20px] flex flex-row items-center felx-wrap gap-[14px]">
+            <div className="mt-[20px] flex flex-row items-center flex-wrap gap-[14px]">
               <div className="w-[52px] h-[52px] flex items-center justify-center rounded-full bg-[#2c2f32] cursor-pointer">
                 <img
                   src={thirdweb}
