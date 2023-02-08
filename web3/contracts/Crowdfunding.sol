@@ -12,6 +12,7 @@ contract Crowdfunding {
         string image;
         address[] donators;
         uint256[] donations;
+        bool isActive;
     }
 
     mapping(uint256 => Campaign) public campaigns;
@@ -32,9 +33,17 @@ contract Crowdfunding {
             campaign.deadline = _deadline;
             campaign.image = _image;
             campaign.amountCollected = 0;
+            campaign.isActive = true;
             numberOfCampaigns++;
 
             return numberOfCampaigns - 1;
+    }
+
+    function disableCampaign(uint _id) public {
+        campaigns[_id].isActive = false;
+    }
+    function undoDisable(uint _id) public {
+        campaigns[_id].isActive = true;
     }
 
     function donateToCompaign(uint256 _id) public payable{
