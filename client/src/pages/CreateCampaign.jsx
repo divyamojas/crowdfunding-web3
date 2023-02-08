@@ -26,6 +26,7 @@ const CreateCampaign = () => {
     checkIfImage(form.image, async (exists) => {
       if (exists) {
         setIsLoading(true);
+        console.log(form);
         await createCampaign({
           ...form,
           target: ethers.utils.parseUnits(form.target, 18),
@@ -39,8 +40,8 @@ const CreateCampaign = () => {
     });
   };
 
-  const handleFormFieldChange = (fieldname, e) => {
-    setForm({ ...form, [fieldname]: e.target.value });
+  const handleFormFieldChange = (fieldName, e) => {
+    setForm({ ...form, [fieldName]: e.target.value });
   };
 
   return (

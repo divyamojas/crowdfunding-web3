@@ -11,11 +11,7 @@ const Home = () => {
   const fetchCampaigns = async () => {
     setIsLoading(true);
     const data = await getCampaigns(); // we are fetching data here because we cannot await in useEffect
-    const activeData = data.filter(
-      (campaign) => campaign.isActive && campaign.deadline > Date.now()
-    );
-
-    setCampaigns(activeData);
+    setCampaigns(data);
     setIsLoading(false);
   };
   useEffect(() => {

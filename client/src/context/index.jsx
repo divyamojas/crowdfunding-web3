@@ -11,7 +11,7 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract(
-    "0x2c69fC6DaD1a62f8E5D4a9910682197e31Bf8E0C"
+    "0xDd67c2ea92B8eBF9c17C7d9d9D687dd7669cd5eC"
   );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
@@ -25,6 +25,7 @@ export const StateContextProvider = ({ children }) => {
     try {
       const data = await createCampaign([
         address, //owner of campaign
+        form.name,
         form.title,
         form.description,
         form.target,
@@ -39,8 +40,14 @@ export const StateContextProvider = ({ children }) => {
 
   const getCampaigns = async () => {
     const campaigns = await contract.call("getCampaigns");
-    const parsedCampaigns = campaigns.map((campaign, i) => ({
+    const activeCampaigns = campaigns.filter(
+      (campaign) =>
+        campaign.isActive === true && campaign.deadline > new Date().getTime()
+    );
+
+    const parsedCampaigns = activeCampaigns.map((campaign, i) => ({
       owner: campaign.owner,
+      name: campaign.name,
       title: campaign.title,
       description: campaign.description,
       target: ethers.utils.formatEther(campaign.target.toString()),
@@ -48,6 +55,7 @@ export const StateContextProvider = ({ children }) => {
       amountCollected: ethers.utils.formatEther(
         campaign.amountCollected.toString()
       ),
+      isActive: campaign.isActive,
       image: campaign.image,
       pId: i,
     }));
@@ -55,11 +63,13 @@ export const StateContextProvider = ({ children }) => {
   };
   const getUserCampaigns = async () => {
     const allCampaigns = await getCampaigns();
-
     const filteredCampaigns = allCampaigns.filter(
-      (campaign) => campaign.owner === address
+      (campaign) =>
+        campaign.owner === address &&
+        campaign.isActive &&
+        campaign.deadline > new Date().getTime()
     );
-
+    console.log(filteredCampaigns);
     return filteredCampaigns;
   };
 
