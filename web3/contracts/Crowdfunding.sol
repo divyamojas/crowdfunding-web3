@@ -14,7 +14,10 @@ contract Crowdfunding {
         uint256[] donations;
         bool isActive;
     }
-
+    modifier onlyOwnerOf(uint256 _id) {
+        require(msg.sender == campaigns[_id].owner);
+        _;
+    }
     mapping(uint256 => Campaign) public campaigns;
     uint256 public numberOfCampaigns = 0;
 
@@ -39,10 +42,10 @@ contract Crowdfunding {
             return numberOfCampaigns - 1;
     }
 
-    function disableCampaign(uint _id) public {
+    function disableCampaign(uint _id) public onlyOwnerOf(_id){
         campaigns[_id].isActive = false;
     }
-    function undoDisable(uint _id) public {
+    function undoDisable(uint _id) public onlyOwnerOf(_id){
         campaigns[_id].isActive = true;
     }
 
